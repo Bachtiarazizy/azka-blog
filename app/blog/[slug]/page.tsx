@@ -68,11 +68,10 @@ interface Post {
   status: "draft" | "published" | "archived";
 }
 
-interface PostPageProps {
-  params: {
-    slug: string;
-  };
-}
+type Props = {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 const POST_QUERY = `*[_type == "post" && slug.current == $slug && status == "published"][0]{
   _id,
@@ -137,8 +136,7 @@ const components: Partial<PortableTextReactComponents> = {
   },
 };
 
-// Metadata generation for the page
-export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await client.fetch<Post>(POST_QUERY, params, {
     next: { revalidate: 30 },
   });
@@ -156,7 +154,7 @@ export async function generateMetadata({ params }: PostPageProps): Promise<Metad
   };
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage({ params }: Props) {
   const post = await client.fetch<Post>(POST_QUERY, params, {
     next: { revalidate: 30 },
   });
