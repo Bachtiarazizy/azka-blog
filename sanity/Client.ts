@@ -1,8 +1,8 @@
 import { createClient } from "next-sanity";
 
 export const client = createClient({
-  projectId: "ppql4ntm",
-  dataset: "production",
-  apiVersion: "2024-01-01",
-  useCdn: false,
+  projectId: process.env.SANITY_PROJECT_ID,
+  dataset: process.env.SANITY_DATASET,
+  apiVersion: process.env.SANITY_API_VERSION,
+  useCdn: process.env.SANITY_USE_CDN === "true", // pastikan konversi boolean dengan benar
 });
